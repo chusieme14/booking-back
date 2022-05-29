@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-card-title>{{payload.id?'Edit':'Add'}} department</v-card-title>
+        <v-card-title>{{payload.id?'Edit':'Add'}} service</v-card-title>
         <v-card-text>
             <v-form ref="form" lazy-validation>
                 <v-container>

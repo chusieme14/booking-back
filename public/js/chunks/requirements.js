@@ -381,7 +381,7 @@ var render = function () {
     "v-card",
     [
       _c("v-card-title", [
-        _vm._v(_vm._s(_vm.payload.id ? "Edit" : "Add") + " department"),
+        _vm._v(_vm._s(_vm.payload.id ? "Edit" : "Add") + " requirement"),
       ]),
       _vm._v(" "),
       _c(

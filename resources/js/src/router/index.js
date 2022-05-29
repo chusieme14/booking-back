@@ -5,6 +5,7 @@ import dashboard from './dashboard'
 import booking from './booking'
 import service from './service'
 import requirement from './requirement'
+import transaction from './transaction'
 
 Vue.use(Router)
 
@@ -19,6 +20,7 @@ const router = new Router({
         ...booking,
         ...service,
         ...requirement,
+        ...transaction,
         {
             path:'/login',
             component: () => import(/* webpackChunkName: "login" */'@/layout/login.vue'),

@@ -10,17 +10,34 @@ class Booking extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date',
-        'time',
         'status',
+        'date_requested',
         'date_accepted',
         'date_completed',
+        'declined_reason',
         'staff_id',
         'client_id',
         'service_id',
     ];
 
-    const ACTIVE = 1;
+    protected $with = [
+        'service','client'
+    ];
+
+    public function service(){
+        return $this->belongsTo(Service::class);
+    }
+
+    public function client(){
+        return $this->belongsTo(Client::class);
+    }
+
+    public function staff(){
+        return $this->belongsTo(Staff::class);
+    }
+
     const WAITING = 1;
+    const Accepted = 2;
     const DONE = 3;
+    const Declined = 4;
 }

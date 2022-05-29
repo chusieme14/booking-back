@@ -20,4 +20,15 @@ class Client extends Authenticatable
         'phone',
         'password',
     ];
+
+    protected $appends = ['fullname'];
+
+    public function getFullNameAttribute(){
+        return ucfirst($this->last_name) . ' '.ucfirst($this->middle_name).' '. ucfirst($this->first_name);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

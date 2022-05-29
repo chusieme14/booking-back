@@ -93,6 +93,9 @@ export default {
 
             return this.$options.filters[filter](value);
         },
+        _normalFormatDate(value) {
+            return moment(value).format('MMMM Do YYYY, h:mm:ss a');
+        },
         _formatDate(value, format = "ddd, Do MMMM YYYY") {
             if (value) {
                 if (Array.isArray(value)) {

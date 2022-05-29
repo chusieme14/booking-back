@@ -1,5 +1,127 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["appointments"],{
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/src/pages/appointment/form.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/src/pages/appointment/form.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    payload: {},
+    show: {}
+  },
+  data: function data() {
+    return {
+      minDate: new Date().toISOString().slice(0, 10),
+      menu1: false,
+      menu2: false,
+      minTime: '8:00',
+      maxTime: '18:00'
+    };
+  },
+  methods: {
+    save: function save() {
+      if (!this.$refs.form.validate()) return;
+      this.$emit('save', this.payload);
+    }
+  },
+  watch: {
+    "show": {
+      handler: function handler(val) {
+        if (!val && this.$refs.form) {
+          this.$refs.form.resetValidation();
+        }
+      },
+      immediate: true
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/src/pages/appointment/index.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/src/pages/appointment/index.vue?vue&type=script&lang=js& ***!
@@ -11,6 +133,7 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _form_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue */ "./resources/js/src/pages/appointment/form.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -90,9 +213,64 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-// import DepForm from './form.vue'
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {// DepForm
+  components: {
+    ApptForm: _form_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     var _ref;
@@ -101,10 +279,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       payload: {},
       showForm: false,
       isdelete: false,
-      appointments: []
+      appointments: [],
+      selectedBooking: {}
     }, _defineProperty(_ref, "payload", {
-      name: '',
-      abbreviation: ''
+      date: null,
+      time: null
     }), _defineProperty(_ref, "details", {}), _defineProperty(_ref, "data", {
       title: "Appointments",
       isFetching: false,
@@ -120,6 +299,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       sortable: true,
       value: 'id'
     }, {
+      text: 'Student number',
+      align: 'start',
+      sortable: true,
+      value: 'student_number'
+    }, {
       text: 'Client',
       align: 'start',
       sortable: true,
@@ -130,6 +314,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       sortable: true,
       value: 'service'
     }, {
+      text: 'Requested date',
+      align: 'start',
+      sortable: true,
+      value: 'created_at'
+    }, {
       text: 'Action',
       align: 'start',
       sortable: true,
@@ -137,6 +326,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }]), _ref;
   },
   methods: {
+    showAcceptForm: function showAcceptForm(val) {
+      Object.assign(this.selectedBooking, val);
+      this.showForm = true;
+    },
+    acceptBooking: function acceptBooking() {
+      var _this = this;
+
+      axios.put("/admin/accept-booking/".concat(this.selectedBooking.id), this.payload).then(function (_ref2) {
+        var data = _ref2.data;
+
+        _this.fetchPage();
+
+        _this.clear();
+      });
+    },
+    markAsDone: function markAsDone(val) {
+      var _this2 = this;
+
+      axios.put("/admin/done-booking/".concat(val.id), val).then(function (_ref3) {
+        var data = _ref3.data;
+
+        _this2.fetchPage();
+      });
+    },
     viewDepartment: function viewDepartment(val) {// this.$router.push({ name: 'dep-civil-status', params: { department_id: val.id } })
     },
     cancel: function cancel() {
@@ -146,51 +359,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.showForm = true;
     },
     fetchPage: function fetchPage() {
-      var _this = this;
+      var _this3 = this;
 
-      console.log(this.options, "option");
       this.data.isFetching = true;
 
       var params = this._createParams(this.options);
 
       params = params + this._createFilterParams(this.data.filter);
       console.log(this.data.keyword, "keyword");
-      if (this.data.keyword) params = params + '&keyword=' + this.data.keyword;
-      axios.get("/admin/departments?".concat(params)).then(function (_ref2) {
-        var data = _ref2.data;
-        _this.departments = data.data;
-        _this.total = data.total;
-        _this.data.isFetching = false;
-      });
-    },
-    save: function save() {
-      var _this2 = this;
 
-      this.payload.abbreviation = this.payload.abbreviation.toLowerCase();
-
-      if (this.payload.id) {
-        delete this.payload.created_at;
-        delete this.payload.updated_at;
-        axios.put("/admin/departments/".concat(this.payload.id), this.payload).then(function (_ref3) {
-          var data = _ref3.data;
-
-          _this2.fetchPage();
-
-          _this2.clear();
-        });
-        return;
+      if (this.data.keyword) {
+        params = params + '&keyword=' + this.data.keyword;
       }
 
-      axios.post("/admin/departments", this.payload).then(function (_ref4) {
+      params = params + '&appointment=1';
+      axios.get("/admin/bookings?".concat(params)).then(function (_ref4) {
         var data = _ref4.data;
-
-        _this2.fetchPage();
-
-        _this2.clear();
+        _this3.appointments = data.data;
+        _this3.total = data.total;
+        _this3.data.isFetching = false;
       });
     },
     showEdit: function showEdit(val) {
-      var _this3 = this;
+      var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
@@ -198,10 +389,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return Object.assign(_this3.payload, val);
+                return Object.assign(_this4.payload, val);
 
               case 2:
-                _this3.showForm = true;
+                _this4.showForm = true;
 
               case 3:
               case "end":
@@ -218,25 +409,341 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.isdelete = true;
     },
     remove: function remove() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios["delete"]("/admin/departments/".concat(this.payload.id)).then(function (_ref5) {
         var data = _ref5.data;
 
-        _this4.fetchPage();
+        _this5.fetchPage();
 
-        _this4.clear();
+        _this5.clear();
       });
     },
     clear: function clear() {
-      this.payload.abbreviation = '';
-      this.payload.name = '';
+      this.payload.date = null;
+      this.payload.name = null;
       this.details = {};
       this.showForm = false;
       this.isdelete = false;
     }
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/src/pages/appointment/form.vue?vue&type=template&id=00b2aca8&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/src/pages/appointment/form.vue?vue&type=template&id=00b2aca8& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-card",
+    [
+      _c("v-card-title", [_vm._v("Select date and time")]),
+      _vm._v(" "),
+      _c(
+        "v-card-text",
+        [
+          _c(
+            "v-form",
+            { ref: "form", attrs: { "lazy-validation": "" } },
+            [
+              _c(
+                "v-container",
+                [
+                  _c(
+                    "v-row",
+                    [
+                      _c(
+                        "v-col",
+                        {
+                          staticClass: "col-text-field",
+                          attrs: { cols: "12", sm: "12" },
+                        },
+                        [
+                          _c(
+                            "v-menu",
+                            {
+                              attrs: {
+                                "offset-x": "",
+                                bottom: "",
+                                right: "",
+                                "close-on-content-click": false,
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "activator",
+                                  fn: function (ref) {
+                                    var on = ref.on
+                                    var attrs = ref.attrs
+                                    return [
+                                      _c(
+                                        "v-btn",
+                                        _vm._g(
+                                          _vm._b(
+                                            {
+                                              attrs: {
+                                                text: "",
+                                                icon: "",
+                                                "x-small": "",
+                                              },
+                                            },
+                                            "v-btn",
+                                            attrs,
+                                            false
+                                          ),
+                                          on
+                                        ),
+                                        [
+                                          _c("v-icon", [
+                                            _vm._v("mdi-calendar"),
+                                          ]),
+                                        ],
+                                        1
+                                      ),
+                                    ]
+                                  },
+                                },
+                              ]),
+                              model: {
+                                value: _vm.menu1,
+                                callback: function ($$v) {
+                                  _vm.menu1 = $$v
+                                },
+                                expression: "menu1",
+                              },
+                            },
+                            [
+                              _vm._v(" "),
+                              _c("v-date-picker", {
+                                attrs: {
+                                  color: "success",
+                                  min: _vm.minDate,
+                                  "no-title": "",
+                                },
+                                on: {
+                                  input: function ($event) {
+                                    _vm.menu1 = false
+                                  },
+                                },
+                                model: {
+                                  value: _vm.payload.date,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.payload, "date", $$v)
+                                  },
+                                  expression: "payload.date",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("label", [
+                            _c("span", { staticClass: "text-red" }, [
+                              _vm._v("*"),
+                            ]),
+                            _vm._v(" Date"),
+                          ]),
+                          _vm._v(" "),
+                          _c("v-text-field", {
+                            attrs: {
+                              rules: [
+                                function () {
+                                  return !!_vm.payload.date || ""
+                                },
+                              ],
+                              dense: "",
+                              filled: "",
+                              readonly: "",
+                            },
+                            on: {
+                              click: function ($event) {
+                                $event.stopPropagation()
+                                _vm.menu1 = true
+                              },
+                            },
+                            model: {
+                              value: _vm.payload.date,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.payload, "date", $$v)
+                              },
+                              expression: "payload.date",
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "v-menu",
+                            {
+                              ref: "menu",
+                              attrs: {
+                                "offset-x": "",
+                                "nudge-right": 10,
+                                bottom: "",
+                                right: "",
+                                "close-on-content-click": false,
+                                "max-width": "290px",
+                                "min-width": "290px",
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "activator",
+                                  fn: function (ref) {
+                                    var on = ref.on
+                                    var attrs = ref.attrs
+                                    return [
+                                      _c(
+                                        "v-btn",
+                                        _vm._g(
+                                          _vm._b(
+                                            {
+                                              attrs: {
+                                                text: "",
+                                                icon: "",
+                                                "x-small": "",
+                                              },
+                                            },
+                                            "v-btn",
+                                            attrs,
+                                            false
+                                          ),
+                                          on
+                                        ),
+                                        [_c("v-icon", [_vm._v("mdi-clock")])],
+                                        1
+                                      ),
+                                    ]
+                                  },
+                                },
+                              ]),
+                              model: {
+                                value: _vm.menu2,
+                                callback: function ($$v) {
+                                  _vm.menu2 = $$v
+                                },
+                                expression: "menu2",
+                              },
+                            },
+                            [
+                              _vm._v(" "),
+                              _vm.menu2
+                                ? _c("v-time-picker", {
+                                    attrs: {
+                                      "full-width": "",
+                                      min: _vm.minTime,
+                                      max: _vm.maxTime,
+                                      "no-title": "",
+                                      color: "success",
+                                    },
+                                    on: {
+                                      "click:minute": function ($event) {
+                                        return _vm.$refs.menu.save(_vm.time)
+                                      },
+                                    },
+                                    model: {
+                                      value: _vm.payload.time,
+                                      callback: function ($$v) {
+                                        _vm.$set(_vm.payload, "time", $$v)
+                                      },
+                                      expression: "payload.time",
+                                    },
+                                  })
+                                : _vm._e(),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("label", [
+                            _c("span", { staticClass: "text-red" }, [
+                              _vm._v("*"),
+                            ]),
+                            _vm._v(" Time"),
+                          ]),
+                          _vm._v(" "),
+                          _c("v-text-field", {
+                            attrs: {
+                              rules: [
+                                function () {
+                                  return !!_vm.payload.time || ""
+                                },
+                              ],
+                              dense: "",
+                              filled: "",
+                              "hide-details": "auto",
+                              readonly: "",
+                            },
+                            on: {
+                              click: function ($event) {
+                                _vm.menu2 = !_vm.menu2
+                              },
+                            },
+                            model: {
+                              value: _vm.payload.time,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.payload, "time", $$v)
+                              },
+                              expression: "payload.time",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card-actions",
+        [
+          _c("v-spacer"),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            {
+              attrs: { color: "error" },
+              on: {
+                click: function ($event) {
+                  return _vm.$emit("cancel")
+                },
+              },
+            },
+            [_vm._v("Cancel")]
+          ),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            { attrs: { color: "success" }, on: { click: _vm.save } },
+            [_vm._v("Save")]
+          ),
+        ],
+        1
+      ),
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
 
 /***/ }),
 
@@ -312,13 +819,52 @@ var render = function () {
             },
             scopedSlots: _vm._u([
               {
-                key: "item.abbreviation",
+                key: "item.student_number",
                 fn: function (ref) {
                   var item = ref.item
                   return [
                     _vm._v(
                       "\n                " +
-                        _vm._s(item.abbreviation.toUpperCase()) +
+                        _vm._s(item.client.student_number) +
+                        "\n            "
+                    ),
+                  ]
+                },
+              },
+              {
+                key: "item.client",
+                fn: function (ref) {
+                  var item = ref.item
+                  return [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(item.client.fullname) +
+                        "\n            "
+                    ),
+                  ]
+                },
+              },
+              {
+                key: "item.service",
+                fn: function (ref) {
+                  var item = ref.item
+                  return [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(item.service.name) +
+                        "\n            "
+                    ),
+                  ]
+                },
+              },
+              {
+                key: "item.created_at",
+                fn: function (ref) {
+                  var item = ref.item
+                  return [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm._normalFormatDate(item.date_requested)) +
                         "\n            "
                     ),
                   ]
@@ -329,22 +875,204 @@ var render = function () {
                 fn: function (ref) {
                   var item = ref.item
                   return [
-                    _c(
-                      "v-row",
-                      [
-                        _c("table-action", {
-                          attrs: {
-                            item: item,
-                            disable: item.courses.length ? ["delete"] : [""],
-                          },
-                          on: {
-                            editItem: _vm.showEdit,
-                            deleteItem: _vm.showDelete,
-                          },
-                        }),
-                      ],
-                      1
-                    ),
+                    item.status == 1
+                      ? _c(
+                          "v-row",
+                          [
+                            _c(
+                              "v-tooltip",
+                              {
+                                attrs: { color: "success", left: "" },
+                                scopedSlots: _vm._u(
+                                  [
+                                    {
+                                      key: "activator",
+                                      fn: function (ref) {
+                                        var on = ref.on
+                                        var attrs = ref.attrs
+                                        return [
+                                          _c(
+                                            "v-btn",
+                                            _vm._g(
+                                              _vm._b(
+                                                {
+                                                  attrs: {
+                                                    color: "success",
+                                                    icon: "",
+                                                  },
+                                                  on: {
+                                                    click: function ($event) {
+                                                      return _vm.showAcceptForm(
+                                                        item
+                                                      )
+                                                    },
+                                                  },
+                                                },
+                                                "v-btn",
+                                                attrs,
+                                                false
+                                              ),
+                                              on
+                                            ),
+                                            [
+                                              _c(
+                                                "v-icon",
+                                                { attrs: { small: "" } },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                mdi-check-bold\n                                "
+                                                  ),
+                                                ]
+                                              ),
+                                            ],
+                                            1
+                                          ),
+                                        ]
+                                      },
+                                    },
+                                  ],
+                                  null,
+                                  true
+                                ),
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        Accept Booking\n                    "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-tooltip",
+                              {
+                                attrs: { color: "error", left: "" },
+                                scopedSlots: _vm._u(
+                                  [
+                                    {
+                                      key: "activator",
+                                      fn: function (ref) {
+                                        var on = ref.on
+                                        var attrs = ref.attrs
+                                        return [
+                                          _c(
+                                            "v-btn",
+                                            _vm._g(
+                                              _vm._b(
+                                                {
+                                                  attrs: {
+                                                    color: "error",
+                                                    icon: "",
+                                                  },
+                                                  on: {
+                                                    click: function ($event) {
+                                                      return _vm.acceptBooking(
+                                                        item
+                                                      )
+                                                    },
+                                                  },
+                                                },
+                                                "v-btn",
+                                                attrs,
+                                                false
+                                              ),
+                                              on
+                                            ),
+                                            [
+                                              _c(
+                                                "v-icon",
+                                                { attrs: { small: "" } },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                mdi-close\n                                "
+                                                  ),
+                                                ]
+                                              ),
+                                            ],
+                                            1
+                                          ),
+                                        ]
+                                      },
+                                    },
+                                  ],
+                                  null,
+                                  true
+                                ),
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        Decline Booking\n                    "
+                                ),
+                              ]
+                            ),
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    item.status == 2
+                      ? [
+                          _c(
+                            "v-tooltip",
+                            {
+                              attrs: { color: "success", left: "" },
+                              scopedSlots: _vm._u(
+                                [
+                                  {
+                                    key: "activator",
+                                    fn: function (ref) {
+                                      var on = ref.on
+                                      var attrs = ref.attrs
+                                      return [
+                                        _c(
+                                          "v-btn",
+                                          _vm._g(
+                                            _vm._b(
+                                              {
+                                                attrs: {
+                                                  color: "success",
+                                                  icon: "",
+                                                },
+                                                on: {
+                                                  click: function ($event) {
+                                                    return _vm.markAsDone(item)
+                                                  },
+                                                },
+                                              },
+                                              "v-btn",
+                                              attrs,
+                                              false
+                                            ),
+                                            on
+                                          ),
+                                          [
+                                            _c(
+                                              "v-icon",
+                                              { attrs: { small: "" } },
+                                              [
+                                                _vm._v(
+                                                  "\n                                    mdi-check-all\n                                "
+                                                ),
+                                              ]
+                                            ),
+                                          ],
+                                          1
+                                        ),
+                                      ]
+                                    },
+                                  },
+                                ],
+                                null,
+                                true
+                              ),
+                            },
+                            [
+                              _vm._v(
+                                "\n                        Mark as Done\n                    "
+                              ),
+                            ]
+                          ),
+                        ]
+                      : _vm._e(),
                   ]
                 },
               },
@@ -367,9 +1095,9 @@ var render = function () {
           },
         },
         [
-          _c("dep-form", {
+          _c("appt-form", {
             attrs: { payload: _vm.payload, show: _vm.showForm },
-            on: { cancel: _vm.cancel, save: _vm.save },
+            on: { cancel: _vm.cancel, save: _vm.acceptBooking },
           }),
         ],
         1
@@ -385,6 +1113,75 @@ var render = function () {
 }
 var staticRenderFns = []
 render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./resources/js/src/pages/appointment/form.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/src/pages/appointment/form.vue ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _form_vue_vue_type_template_id_00b2aca8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=00b2aca8& */ "./resources/js/src/pages/appointment/form.vue?vue&type=template&id=00b2aca8&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/js/src/pages/appointment/form.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _form_vue_vue_type_template_id_00b2aca8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _form_vue_vue_type_template_id_00b2aca8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/src/pages/appointment/form.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/src/pages/appointment/form.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/src/pages/appointment/form.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/src/pages/appointment/form.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/src/pages/appointment/form.vue?vue&type=template&id=00b2aca8&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/src/pages/appointment/form.vue?vue&type=template&id=00b2aca8& ***!
+  \************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_00b2aca8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=00b2aca8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/src/pages/appointment/form.vue?vue&type=template&id=00b2aca8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_00b2aca8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_00b2aca8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

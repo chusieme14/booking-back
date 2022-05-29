@@ -14,4 +14,9 @@ export default [
         icon:'mdi-file-multiple',
         route:'requirements',
     },
+    {
+        name:'Transactions',
+        icon:'mdi-cash-multiple',
+        route:'transactions',
+    },
 ]

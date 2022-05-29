@@ -15,18 +15,48 @@ class Bookings {
     {
         $this->searchColumns();
         $this->sortBy();
+        $this->forAppointment();
+        $this->forTransaction();
         $per_page = Request()->per_page;
         if ($per_page=='-1' || !isset(Request()->per_page)) return $this->model->paginate($this->model->count());
         return $this->model->paginate($per_page);
     }
 
+    public function forAppointment()
+    {
+        if(Request()->appointment){
+            $this->model->whereIn('status',[1,2]);
+        }
+    }
+
+    public function forTransaction()
+    {
+        if(Request()->transaction){
+            $this->model->whereIn('status',[3,4]);
+        }
+    }
+
     public function searchColumns()
     {
-        $searchable = ['name'];
+        $searchable = ['fullname', 'name', 'student_number'];
         if(Request()->keyword && Request()->keyword!="null"){
             $keyword = Request()->keyword;
             foreach ($searchable as $column) {
-                $this->model->orWhere($column, 'like', "%".$keyword."%");
+                if($column=='name'){
+                    $this->model->orWhereHas('service',function($q) use($column, $keyword){
+                        $q->where($column, 'like', "%".$keyword."%");
+                    }); 
+                }
+                if($column=='fullname'){
+                    $this->model->orWhereHas('client',function($q) use($keyword){
+                        $q->whereRaw("CONCAT(TRIM(`first_name`),' ', TRIM(`last_name`)) LIKE "."'%" .$keyword. "%'");
+                    }); 
+                }
+                if($column=='student_number'){
+                    $this->model->orWhereHas('client',function($q) use($column,$keyword){
+                        $q->where($column, 'like', "%".$keyword."%");
+                    }); 
+                }
             }
         }
     }
@@ -47,13 +77,15 @@ class Bookings {
 
                 $exactSortKey = explode('/', $filter)[0];
                 $exactSortType = explode('/', $filter)[1];
-                if($exactSortKey == 'level'){
-                    $this->model->join('levels', 'levels.id', '=', 'courses.level_id')
-                        ->select('levels.difficulty', 'courses.*')
-                        ->orderBy('levels.difficulty', $exactSortType);
+                if($exactSortKey == 'service'){
+                    $this->model->join('services', 'services.id', '=', 'bookings.service_id')
+                        ->select('services.name', 'bookings.*')
+                        ->orderBy('services.name', $exactSortType);
                 }
-                elseif($exactSortKey == 'dates'){
-                    $this->model->orderBy('date_from', $exactSortType);  
+                elseif($exactSortKey == 'client'){
+                    $this->model->join('clients', 'clients.id', '=', 'bookings.client_id')
+                        ->select('clients.last_name', 'bookings.*')
+                        ->orderBy('clients.last_name', $exactSortType);  
                 }
                 else{
                     $this->model->orderBy($exactSortKey, $exactSortType);  
@@ -61,7 +93,7 @@ class Bookings {
             }
         }
         else{
-            $this->model->orderBy('id', 'desc');
+            $this->model->orderBy('id');
         }
     }
 }

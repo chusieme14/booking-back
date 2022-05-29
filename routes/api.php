@@ -4,8 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ClientController;
-use App\Http\Controllers\BackOffice\GraduateController;
+use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\BackOffice\ServiceController;
+use App\Http\Controllers\BackOffice\GraduateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +27,6 @@ Route::group(['middleware'=>['auth:api']],function(){
     Route::resource('services', ServiceController::class);
     Route::get('clients/{id}', [ClientController::class, 'show']);
     Route::put('clients/{id}', [ClientController::class, 'update']);
+    Route::post('bookings' , [BookingController::class, 'saveBooking']);
+    Route::get('view-appointments/{id}' , [BookingController::class, 'viewAppointments']);
 });

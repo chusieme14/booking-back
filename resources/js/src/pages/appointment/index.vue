@@ -33,17 +33,71 @@
                 fixed-header
             >
                 <!-- @click:row="viewRecord" -->
-                <template v-slot:item.abbreviation="{ item }">
-                    {{item.abbreviation.toUpperCase()}}
+                <template v-slot:item.student_number="{ item }">
+                    {{item.client.student_number}}
+                </template>
+                <template v-slot:item.client="{ item }">
+                    {{item.client.fullname}}
+                </template>
+                <template v-slot:item.service="{ item }">
+                    {{item.service.name}}
+                </template>
+                <template v-slot:item.created_at="{ item }">
+                    {{_normalFormatDate(item.date_requested)}}
                 </template>
                 <template v-slot:item.action="{ item }">
-                    <v-row>
-                        <table-action :item="item" 
-                            @editItem="showEdit" 
-                            @deleteItem="showDelete"
-                            :disable="item.courses.length?['delete']:['']"
-                        ></table-action>
+                    <v-row v-if="item.status==1">
+                        <v-tooltip color="success" left>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                    color="success"
+                                    icon
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    @click="showAcceptForm(item)"
+                                >
+                                    <v-icon small>
+                                    mdi-check-bold
+                                    </v-icon>
+                                </v-btn>
+                            </template>
+                            Accept Booking
+                        </v-tooltip>
+                        <v-tooltip color="error" left>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                    color="error"
+                                    icon
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    @click="acceptBooking(item)"
+                                >
+                                    <v-icon small>
+                                    mdi-close
+                                    </v-icon>
+                                </v-btn>
+                            </template>
+                            Decline Booking
+                        </v-tooltip>
                     </v-row>
+                    <template v-if="item.status==2">
+                        <v-tooltip color="success" left>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                    color="success"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    icon
+                                    @click="markAsDone(item)"
+                                >
+                                    <v-icon small>
+                                        mdi-check-all
+                                    </v-icon>
+                                </v-btn>
+                            </template>
+                            Mark as Done
+                        </v-tooltip>
+                    </template>
                 </template>
             
             </v-data-table>
@@ -54,12 +108,12 @@
             persistent
             max-width="600px"
         >
-            <dep-form 
+            <appt-form 
                 :payload="payload"
                 :show="showForm" 
                 @cancel="cancel"
-                @save="save"
-            ></dep-form>
+                @save="acceptBooking"
+            ></appt-form>
         </v-dialog>
         <confirm-dialog
             :details="details"
@@ -70,10 +124,10 @@
     </v-card>
 </template>
 <script>
-// import DepForm from './form.vue'
+import ApptForm from './form.vue'
 export default {
     components:{
-        // DepForm
+        ApptForm
     },
     data(){
         return {
@@ -81,9 +135,10 @@ export default {
             showForm:false,
             isdelete:false,
             appointments:[],
+            selectedBooking:{},
             payload:{
-                name:'',
-                abbreviation:''
+                date:null,
+                time:null
             },
             details:{},
             data: {
@@ -107,6 +162,12 @@ export default {
                     value: 'id',
                 },
                 {
+                    text: 'Student number',
+                    align: 'start',
+                    sortable: true,
+                    value: 'student_number',
+                },
+                {
                     text: 'Client',
                     align: 'start',
                     sortable: true,
@@ -119,6 +180,12 @@ export default {
                     value: 'service',
                 },
                 {
+                    text: 'Requested date',
+                    align: 'start',
+                    sortable: true,
+                    value: 'created_at',
+                },
+                {
                     text: 'Action',
                     align: 'start',
                     sortable: true,
@@ -128,6 +195,21 @@ export default {
         }
     },
     methods:{
+        showAcceptForm(val){
+            Object.assign(this.selectedBooking, val)
+            this.showForm = true
+        },
+        acceptBooking(){
+            axios.put(`/admin/accept-booking/${this.selectedBooking.id}`, this.payload).then(({data})=>{
+                this.fetchPage()
+                this.clear()
+            })
+        },
+        markAsDone(val){
+            axios.put(`/admin/done-booking/${val.id}`, val).then(({data})=>{
+                this.fetchPage()
+            })
+        },
         viewDepartment(val){
             // this.$router.push({ name: 'dep-civil-status', params: { department_id: val.id } })
         },
@@ -138,33 +220,18 @@ export default {
             this.showForm = true
         },
         fetchPage(){
-            console.log(this.options,"option")
             this.data.isFetching = true
-                let params = this._createParams(this.options);
-                params = params + this._createFilterParams(this.data.filter)
-                console.log(this.data.keyword,"keyword")
-                if(this.data.keyword)
-                    params = params + '&keyword=' + this.data.keyword
-            axios.get(`/admin/departments?${params}`).then(({data})=>{
-                this.departments = data.data
+            let params = this._createParams(this.options);
+            params = params + this._createFilterParams(this.data.filter)
+            console.log(this.data.keyword,"keyword")
+            if(this.data.keyword){
+                params = params + '&keyword=' + this.data.keyword
+            }
+            params = params + '&appointment=1'
+            axios.get(`/admin/bookings?${params}`).then(({data})=>{
+                this.appointments = data.data
                 this.total = data.total
                 this.data.isFetching = false
-            })
-        },
-        save(){
-            this.payload.abbreviation = this.payload.abbreviation.toLowerCase()
-            if (this.payload.id) {
-                delete this.payload.created_at
-                delete this.payload.updated_at
-                axios.put(`/admin/departments/${this.payload.id}`, this.payload).then(({data})=>{
-                    this.fetchPage()
-                    this.clear()
-                })
-                return
-            }
-            axios.post(`/admin/departments`, this.payload).then(({data})=>{
-                this.fetchPage()
-                this.clear()
             })
         },
         async showEdit(val){
@@ -184,8 +251,8 @@ export default {
             })
         },
         clear(){
-            this.payload.abbreviation = ''
-            this.payload.name = ''
+            this.payload.date = null
+            this.payload.name = null
             this.details = {}
             this.showForm = false
             this.isdelete = false
