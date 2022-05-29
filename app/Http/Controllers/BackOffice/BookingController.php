@@ -31,8 +31,11 @@ class BookingController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function declineBooking(Request $request, $id)
     {
-        
+        Booking::where('id', $id)->update([
+            'status' => 4,
+            'declined_reason' => $request->declined_reason,
+        ]);
     }
 }

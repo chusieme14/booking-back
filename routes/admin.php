@@ -17,4 +17,5 @@ Route::group(['middleware'=>['auth:web']],function(){
     Route::get('bookings' , [BookingController::class, 'index']);
     Route::put('accept-booking/{id}' , [BookingController::class, 'acceptBooking']);
     Route::put('done-booking/{id}' , [BookingController::class, 'doneBooking']);
+    Route::put('decline-booking/{id}' , [BookingController::class, 'declineBooking']);
 });

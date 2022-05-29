@@ -21,7 +21,7 @@ class Booking extends Model
     ];
 
     protected $with = [
-        'service','client'
+        'service','client','rating'
     ];
 
     public function service(){
@@ -34,6 +34,10 @@ class Booking extends Model
 
     public function staff(){
         return $this->belongsTo(Staff::class);
+    }
+
+    public function rating(){
+        return $this->hasOne(Rating::class);
     }
 
     const WAITING = 1;

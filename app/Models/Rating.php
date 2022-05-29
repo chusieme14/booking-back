@@ -10,9 +10,13 @@ class Rating extends Model
     use HasFactory;
 
     protected $fillable = [
-        'suggestions',
-        'waiting_time',
-        'staff_id',
+        'suggestion',
+        'star_number',
         'booking_id',
     ];
+
+    public function booking()
+    {
+       return $this->belongsTo(Booking::class);
+    }
 }

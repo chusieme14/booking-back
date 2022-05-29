@@ -29,4 +29,5 @@ Route::group(['middleware'=>['auth:api']],function(){
     Route::put('clients/{id}', [ClientController::class, 'update']);
     Route::post('bookings' , [BookingController::class, 'saveBooking']);
     Route::get('view-appointments/{id}' , [BookingController::class, 'viewAppointments']);
+    Route::put('rate-booking/{id}' , [BookingController::class, 'rateBooking']);
 });

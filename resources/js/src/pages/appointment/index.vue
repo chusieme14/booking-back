@@ -28,7 +28,6 @@
                 :options.sync="options"
                 :items-per-page="options.itemsPerPage"
                 @update:options="fetchPage"
-                @click:row="viewDepartment"
                 class="cursor-pointer table-fix-height"
                 fixed-header
             >
@@ -70,7 +69,7 @@
                                     icon
                                     v-bind="attrs"
                                     v-on="on"
-                                    @click="acceptBooking(item)"
+                                    @click="showDecline(item)"
                                 >
                                     <v-icon small>
                                     mdi-close
@@ -115,12 +114,30 @@
                 @save="acceptBooking"
             ></appt-form>
         </v-dialog>
-        <confirm-dialog
-            :details="details"
-            :show="isdelete"
-            @cancel="cancel"
-            @confirm="remove"
-        />
+        <v-dialog
+            v-model="isdeclined"
+            persistent
+            max-width="600px"
+        >
+            <v-card>
+                <v-card-title>Decline booking</v-card-title>
+                <v-card-text>
+                    <v-form ref="form" lazy-validation>
+                        <v-text-field
+                            v-model="payload.declined_reason"
+                            label="Reason"
+                            placeholder="Reason"
+                            :rules="[() => !!payload.declined_reason ||  '']"
+                        >
+                        </v-text-field>
+                    </v-form>
+                    <div class="class-action">
+                        <v-btn @click="clear" color="primary mr-2">Cancel</v-btn>
+                        <v-btn @click="declineBooking" color="error">Decline</v-btn>
+                    </div>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-card>
 </template>
 <script>
@@ -133,6 +150,7 @@ export default {
         return {
             payload:{},
             showForm:false,
+            isdeclined:false,
             isdelete:false,
             appointments:[],
             selectedBooking:{},
@@ -199,6 +217,10 @@ export default {
             Object.assign(this.selectedBooking, val)
             this.showForm = true
         },
+        showDecline(val){
+            Object.assign(this.selectedBooking, val)
+            this.isdeclined = true
+        },
         acceptBooking(){
             axios.put(`/admin/accept-booking/${this.selectedBooking.id}`, this.payload).then(({data})=>{
                 this.fetchPage()
@@ -208,10 +230,15 @@ export default {
         markAsDone(val){
             axios.put(`/admin/done-booking/${val.id}`, val).then(({data})=>{
                 this.fetchPage()
+                this.clear()
             })
         },
-        viewDepartment(val){
-            // this.$router.push({ name: 'dep-civil-status', params: { department_id: val.id } })
+        declineBooking(){
+            if(!this.$refs.form.validate()) return;
+            axios.put(`/admin/decline-booking/${this.selectedBooking.id}`, this.payload).then(({data})=>{
+                this.fetchPage()
+                this.clear()
+            })
         },
         cancel(){
             this.clear()
@@ -234,27 +261,13 @@ export default {
                 this.data.isFetching = false
             })
         },
-        async showEdit(val){
-            await Object.assign(this.payload, val)
-            this.showForm = true
-        },
-        showDelete(val){
-            Object.assign(this.payload, val)
-            this.details.title = 'Delete'
-            this.details.message = `Are you sure you want to remove ${this.payload.abbreviation}?`
-            this.isdelete = true
-        },
-        remove(){
-            axios.delete(`/admin/departments/${this.payload.id}`).then(({data})=>{
-                this.fetchPage()
-                this.clear()
-            })
-        },
         clear(){
             this.payload.date = null
             this.payload.name = null
             this.details = {}
+            this.selectedBooking = {}
             this.showForm = false
+            this.isdeclined = false
             this.isdelete = false
         }
       
@@ -262,3 +275,9 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+    .class-action{
+        display: flex;
+        justify-content: flex-end;
+    }
+</style>
