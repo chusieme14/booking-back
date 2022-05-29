@@ -1,0 +1,108 @@
+.login-main-container{
+    display: flex;
+    justify-content: space-between;
+    height: 100vh;
+    margin: 0px !important;
+    padding: 0;
+}
+.right-container{
+    width: 450px;
+    display: flex;
+    justify-content: center;
+    background:rgb(241, 237, 237);
+    /* background-color: red; */
+    /* align-items: center; */
+    flex-direction: column;
+    padding: 10px;
+}
+.right-container div h2{
+    text-align: center;
+    margin-bottom: 20px;
+}
+.right-inner-container{
+    border-radius: 5px;
+    height: 319px;
+    padding: 15px;
+    background:#FFF;
+    margin:40px auto;
+    box-shadow: 0 10px 6px -6px #777;
+}
+.left-container{
+    /* width: calc(100% - 450px); */
+    width: 100%;
+    background-color: #006048;
+    display: flex;
+    justify-content: center;
+}
+.left-container1{
+    /* background-color: #161616; */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.table-header-main-container{
+    display: flex;
+}
+.table-header-search{
+    width: 96%;
+}
+.filter-main-container{
+    width: 500px;
+    display: block;
+}
+.filter-main-container div{
+    display: flex;
+}
+.hidden{
+    display: none;
+}
+.sidebar-menu{
+    overflow-y:scroll;
+    height: 80vh;
+}
+*::-webkit-scrollbar {
+    display: none;
+}
+.graduate-avatar{
+    border-radius: 50% !important;
+    height: 200px;
+    width: 200px;
+    -o-object-fit: contain;
+       object-fit: contain;
+    justify-content: center;
+}
+.graduate-image-container{
+    display: flex;
+    justify-content: center;
+}
+.text-danger{
+    color: red !important;
+}
+.text-red{
+    color: red !important;
+}
+.table-fix-height .v-data-table__wrapper {
+    max-height: 74vh !important;
+    /* overflow: auto !important; */
+}
+.cursor-pointer{
+    cursor: pointer !important;
+}
+.dashboard-main-container{
+    height: 83vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.dashboard-inner-container{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+.class-year{
+    max-width: 317px !important;
+}
+.class-chart-head{
+    display: flex;
+    justify-content: space-between;
+}
