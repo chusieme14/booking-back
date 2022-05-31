@@ -19,6 +19,7 @@ class Client extends Authenticatable
         'email',
         'phone',
         'password',
+        'is_verified',
     ];
 
     protected $appends = ['fullname'];
