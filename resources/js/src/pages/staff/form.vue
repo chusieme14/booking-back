@@ -197,6 +197,7 @@ export default {
                 this.services = data.data
                 this.total = data.total
                 this.data.isFetching = false
+                this.getDesignations()
             })
         },
         getDesignations(){
@@ -216,7 +217,6 @@ export default {
                         Object.assign(this.selectService, this.payload.services)
                         this.getServices()
                     }
-                    this.getDesignations()
                 }
             },immediate:true
         }

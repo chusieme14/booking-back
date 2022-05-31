@@ -18,6 +18,7 @@
                 :key="item.name"
                 :class="getCurrentUrl == item.route ? 'active' : ''"
                 @click.stop="$route.name != item.name?$router.push({name: item.route}):''"
+                :disabled="hasPermission(item)"
             >
                 <v-list-item-icon v-if="drawer">
                     <v-tooltip right color="success">
@@ -59,12 +60,32 @@ export default {
     data(){
         return{
             Menuitems: Menuitems,
+            user:{}
         }
     },
     methods:{
         logout(){
             this.$emit('logout')
         },
+        getUser(){
+            axios.get(`/admin/get-user`).then(({data})=>{
+                this.user = data
+            })
+        },
+        hasPermission(item){
+            if(!this.user.designation_id||this.user.designation_id==1) return false
+            else if(this.user.designation_id==3){
+                if(item.name=='Appointments') return false
+                return true
+            }
+            else if(this.user.designation_id==2){
+                if(item.name=='Employees') return true
+                return false
+            }
+        }
+    },
+    created(){
+        this.getUser()
     },
     computed:{
         getCurrentUrl() {

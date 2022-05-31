@@ -20,6 +20,8 @@ use App\Http\Controllers\BackOffice\GraduateController;
 */
 Route::post('login' ,[AuthController::class,'login']);
 Route::post('register' ,[AuthController::class,'register']);
+Route::post('forgot-password' ,[AuthController::class,'forgotPassword']);
+Route::post('change-password' ,[AuthController::class,'changePassword']);
 Route::group(['middleware'=>['auth:api']],function(){
     Route::get('user-details' ,[AuthController::class,'details']);
     Route::post('logout' ,[AuthController::class,'logout']);
@@ -27,6 +29,7 @@ Route::group(['middleware'=>['auth:api']],function(){
     Route::resource('services', ServiceController::class);
     Route::get('clients/{id}', [ClientController::class, 'show']);
     Route::put('clients/{id}', [ClientController::class, 'update']);
+    Route::put('update-client-password/{id}', [ClientController::class, 'updatePassword']);
     Route::post('bookings' , [BookingController::class, 'saveBooking']);
     Route::get('view-appointments/{id}' , [BookingController::class, 'viewAppointments']);
     Route::put('rate-booking/{id}' , [BookingController::class, 'rateBooking']);

@@ -46,4 +46,15 @@ class AuthController extends Controller
             'password' => Hash::make($request->new_password)
         ]);
     }
+
+    public function forgotPassword(Request $request)
+    {
+        return Client::where(['student_number'=>$request->student_number, 'email'=>$request->email])->exists();
+    }
+
+    public function changePassword(Request $request)
+    {
+        return Client::where(['student_number'=>$request->student_number, 'email'=>$request->email])
+            ->update(['password'=>Hash::make($request->password)]);
+    }
 }

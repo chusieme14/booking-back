@@ -208,6 +208,8 @@ __webpack_require__.r(__webpack_exports__);
         _this.services = data.data;
         _this.total = data.total;
         _this.data.isFetching = false;
+
+        _this.getDesignations();
       });
     },
     getDesignations: function getDesignations() {
@@ -231,8 +233,6 @@ __webpack_require__.r(__webpack_exports__);
             Object.assign(this.selectService, this.payload.services);
             this.getServices();
           }
-
-          this.getDesignations();
         }
       },
       immediate: true
