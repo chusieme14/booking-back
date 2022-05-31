@@ -43,7 +43,8 @@ class AuthController extends Controller
     public function register(Request $request){
         $graduate = Client::create($request->all());
         $graduate->update([
-            'password' => Hash::make($request->new_password)
+            'password' => Hash::make($request->new_password),
+            'is_verified' => 1
         ]);
     }
 
