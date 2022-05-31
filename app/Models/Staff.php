@@ -22,4 +22,22 @@ class Staff extends Authenticatable
         'password',
         'designation_id',
     ];
+
+    protected $with=['designation', 'services'];
+
+    protected $appends = ['fullname'];
+
+    public function getFullNameAttribute(){
+        return ucfirst($this->last_name) . ' '.ucfirst($this->middle_name).' '. ucfirst($this->first_name);
+    }
+
+    public function services()
+    {
+        return $this->belongsToMany(Service::class);
+    }
+
+    public function designation()
+    {
+        return $this->belongsTo(Designation::class);
+    }
 }

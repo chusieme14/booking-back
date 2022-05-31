@@ -7,7 +7,7 @@
                 @refresh="fetchPage"
                 @search="fetchPage"
                 @filterRecord="fetchPage"
-                :hide="['filter']"
+                :hide="['addNew']"
             >
                 <template v-slot:custom_filter>
                     <graduate-filter
@@ -17,7 +17,7 @@
             </table-header>
             <v-data-table
                 :headers="headers"
-                :items="requirements"
+                :items="transactions"
                 max-height="100%"
                 :single-select="false"
                 show-select
@@ -33,25 +33,47 @@
                 fixed-header
             >
                 <!-- @click:row="viewRecord" -->
-                <template v-slot:item.abbreviation="{ item }">
-                    {{item.abbreviation.toUpperCase()}}
+                <template v-slot:item.staff="{ item }">
+                    {{item.staff.fullname}}
+                </template>
+                <template v-slot:item.client="{ item }">
+                    {{item.client.fullname}}
+                </template>
+                <template v-slot:item.service="{ item }">
+                    {{item.service.name}}
+                </template>
+                <template v-slot:item.rating="{ item }">
+                    <div v-if="item.rating">
+                        <v-icon :color="item.rating.star_number>=1?'yellow darken-1':''">mdi-star</v-icon>
+                        <v-icon :color="item.rating.star_number>=2?'yellow darken-1':''">mdi-star</v-icon>
+                        <v-icon :color="item.rating.star_number>=3?'yellow darken-1':''">mdi-star</v-icon>
+                        <v-icon :color="item.rating.star_number>=4?'yellow darken-1':''">mdi-star</v-icon>
+                        <v-icon :color="item.rating.star_number>=5?'yellow darken-1':''">mdi-star</v-icon>
+                    </div>
+                    <div v-else>
+                        <v-icon >mdi-star</v-icon>
+                        <v-icon >mdi-star</v-icon>
+                        <v-icon >mdi-star</v-icon>
+                        <v-icon >mdi-star</v-icon>
+                        <v-icon >mdi-star</v-icon>
+                    </div>
                 </template>
                 <template v-slot:item.action="{ item }">
                     <v-row>
-                        <!-- <v-tooltip color="#1976D2" left>
+                        <v-tooltip color="#1976D2" left>
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn v-bind="attrs" v-on="on" color="warning" icon>
+                                <v-btn @click="showViewForm(item)" v-bind="attrs" v-on="on" color="warning" icon>
                                     <v-icon small color="#1976D2">
                                         mdi-eye
                                     </v-icon>
                                 </v-btn>
                             </template>
-                            Show
-                        </v-tooltip> -->
-                        <table-action :item="item" 
+                            View transaction
+                        </v-tooltip>
+                        <!-- <table-action :item="item" 
                             @editItem="showEdit" 
                             @deleteItem="showDelete"
-                        ></table-action>
+                        ></table-action> -->
                     </v-row>
                 </template>
             
@@ -60,10 +82,10 @@
         </v-card-text>
         <v-dialog
             v-model="showForm"
-            persistent
             max-width="600"
         >
-            <reqs-form 
+            <reqs-form
+                :key="payload.id" 
                 :payload="payload"
                 :show="showForm" 
                 @cancel="cancel"
@@ -89,7 +111,7 @@ export default {
             payload:{},
             showForm:false,
             isdelete:false,
-            requirements:[],
+            transactions:[],
             payload:{
                 name:'',
                 abbreviation:'',
@@ -117,10 +139,28 @@ export default {
                     value: 'id',
                 },
                 {
-                    text: 'Name',
+                    text: 'Staff',
                     align: 'start',
                     sortable: true,
-                    value: 'name',
+                    value: 'staff',
+                },
+                {
+                    text: 'Client',
+                    align: 'start',
+                    sortable: true,
+                    value: 'client',
+                },
+                {
+                    text: 'Service',
+                    align: 'start',
+                    sortable: true,
+                    value: 'service',
+                },
+                {
+                    text: 'Rating',
+                    align: 'start',
+                    sortable: true,
+                    value: 'rating',
                 },
                 {
                     text: 'Action',
@@ -132,6 +172,10 @@ export default {
         }
     },
     methods:{
+        showViewForm(val){
+            Object.assign(this.payload, val)
+            this.showForm = true
+        },
         viewDepartment(val){
             // this.$router.push({ name: 'dep-civil-status', params: { department_id: val.id } })
         },
@@ -146,10 +190,12 @@ export default {
             let params = this._createParams(this.options);
             params = params + this._createFilterParams(this.data.filter)
             console.log(this.data.keyword,"keyword")
-            if(this.data.keyword)
+            if(this.data.keyword){
                 params = params + '&keyword=' + this.data.keyword
-            axios.get(`/admin/requirements?${params}`).then(({data})=>{
-                this.requirements = data.data
+            }
+            params = params + '&transactions=1'
+            axios.get(`/admin/bookings?${params}`).then(({data})=>{
+                this.transactions = data.data
                 this.total = data.total
                 this.data.isFetching = false
             })

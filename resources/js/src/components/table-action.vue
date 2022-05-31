@@ -18,7 +18,7 @@
             </template>
             Edit
         </v-tooltip>
-        <v-tooltip color="primary" left>
+        <v-tooltip color="error" left>
             <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     color="error"

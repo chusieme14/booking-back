@@ -4,11 +4,11 @@
     "/css/app.css": "/css/app.css",
     "/js/chunks/alumni.js": "/js/chunks/alumni.js",
     "/js/chunks/appointments.js": "/js/chunks/appointments.js",
+    "/js/chunks/client.js": "/js/chunks/client.js",
+    "/js/chunks/employees.js": "/js/chunks/employees.js",
     "/js/chunks/requirements.js": "/js/chunks/requirements.js",
     "/js/chunks/services.js": "/js/chunks/services.js",
-    "/js/chunks/vendors~alumni.js": "/js/chunks/vendors~alumni.js",
-    "/js/chunks/vendors~alumni~appointments~requirements~services.js": "/js/chunks/vendors~alumni~appointments~requirements~services.js",
     "/js/chunks/transactions.js": "/js/chunks/transactions.js",
-    "/js/chunks/vendors~alumni~appointments~requirements~services~transactions.js": "/js/chunks/vendors~alumni~appointments~requirements~services~transactions.js",
-    "/js/chunks/vendors~alumni~requirements~services~transactions.js": "/js/chunks/vendors~alumni~requirements~services~transactions.js"
+    "/js/chunks/vendors~alumni.js": "/js/chunks/vendors~alumni.js",
+    "/js/chunks/vendors~alumni~client~employees~requirements~services~transactions.js": "/js/chunks/vendors~alumni~client~employees~requirements~services~transactions.js"
 }

@@ -21,4 +21,9 @@ class Service extends Model
     public function requirements(){
         return $this->belongsToMany(Requirement::class);
     }
+
+    public function staffs()
+    {
+        return $this->belongsToMany(Staff::class);
+    }
 }

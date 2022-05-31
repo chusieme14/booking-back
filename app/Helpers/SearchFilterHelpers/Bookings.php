@@ -31,8 +31,8 @@ class Bookings {
 
     public function forTransaction()
     {
-        if(Request()->transaction){
-            $this->model->whereIn('status',[3,4]);
+        if(Request()->transactions){
+            $this->model->where('status', 3);
         }
     }
 
@@ -93,7 +93,12 @@ class Bookings {
             }
         }
         else{
-            $this->model->orderBy('id');
+            if(Request()->transactions){
+
+                $this->model->orderBy('id','desc');
+            }else{
+                $this->model->orderBy('id');
+            }
         }
     }
 }

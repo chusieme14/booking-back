@@ -71,7 +71,7 @@ export default {
             let payload = this.credential
                 axios.post(`/admin/login`,{...payload}).then(({data})=>{
                     if(!data.error_message){
-                        this.$router.push({name:'dashboard'})
+                        this.$router.push({name:'appointments'})
                     }else {
                         this.iserror = true
                         setTimeout(() => {

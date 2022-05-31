@@ -19,4 +19,14 @@ export default [
         icon:'mdi-cash-multiple',
         route:'transactions',
     },
+    {
+        name:'Clients',
+        icon:'mdi-account-multiple',
+        route:'clients',
+    },
+    {
+        name:'Employees',
+        icon:'mdi-account-multiple',
+        route:'employees',
+    },
 ]

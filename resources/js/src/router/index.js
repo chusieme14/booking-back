@@ -6,6 +6,8 @@ import booking from './booking'
 import service from './service'
 import requirement from './requirement'
 import transaction from './transaction'
+import client from './client'
+import employee from './employee'
 
 Vue.use(Router)
 
@@ -21,6 +23,8 @@ const router = new Router({
         ...service,
         ...requirement,
         ...transaction,
+        ...client,
+        ...employee,
         {
             path:'/login',
             component: () => import(/* webpackChunkName: "login" */'@/layout/login.vue'),

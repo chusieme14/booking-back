@@ -21,7 +21,7 @@ class Booking extends Model
     ];
 
     protected $with = [
-        'service','client','rating'
+        'service','client','rating','staff'
     ];
 
     public function service(){

@@ -20,7 +20,7 @@ class CreateStaffsTable extends Migration
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('username');
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->unsignedBigInteger('designation_id')->nullable();
             $table->timestamps();
         });

@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     public function login(Request $request){
-        $graduate = Client::where('email', $request->email)->first();
+        $graduate = Client::where('email', $request->email)->where('is_verified', 1)->first();
         if(!$graduate){
-            $graduate = Client::where('student_number', $request->email)->first();
+            $graduate = Client::where('student_number', $request->email)->where('is_verified', 1)->first();
             if(!$graduate) return response()->json(['message'=>'incorrect data'], 404);
         }
         if (!Hash::check($request->password, $graduate->password)) {

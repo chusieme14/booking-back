@@ -20,6 +20,7 @@ class BookingController extends Controller
         Booking::where('id', $id)->update([
             'status' => 2,
             'date_accepted' => Carbon::parse($request->date.' '.$request->time),
+            'staff_id' => auth()->guard('web')->user()->id,
         ]);
     }
 
