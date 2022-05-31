@@ -16,8 +16,8 @@ class ClientSeeder extends Seeder
     {
         Client::create([
             'student_number' => '12-00051',
-            'first_name' => 'paul anderson',
-            'last_name' => 'garcia',
+            'first_name' => 'test user',
+            'last_name' => 'test last',
             'email' => 'test@user.com',
             'phone' => '0926154778543',
             'password' => '$2y$10$L.gDZljq.Po8Qm82bh5e6usGncbIqSMhd1MIsDbikPvMfc3o8YKWS',
