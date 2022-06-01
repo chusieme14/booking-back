@@ -14,8 +14,13 @@ class BookingController extends Controller
         if(Booking::where('client_id', $request->client_id)->whereDoesntHave('rating')->exists()){
             return response()->json(['message'=>'please rate your previous appointment']);
         }
-        $booking = Booking::create($request->all());
-        $booking->update(['date_requested'=>Carbon::now()]);
+        foreach ($request->service_ids as $service) {
+            Booking::create([
+                'date_requested' => Carbon::now(),
+                'client_id' => $request->client_id,
+                'service_id' => $service,
+            ]);
+        }
     }
 
     public function viewAppointments($id)

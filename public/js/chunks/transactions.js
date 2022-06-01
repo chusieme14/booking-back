@@ -198,6 +198,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -244,6 +247,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       align: 'start',
       sortable: true,
       value: 'service'
+    }, {
+      text: 'Status',
+      align: 'start',
+      sortable: true,
+      value: 'status'
     }, {
       text: 'Rating',
       align: 'start',
@@ -661,6 +669,19 @@ var render = function () {
                     _vm._v(
                       "\n                " +
                         _vm._s(item.service.name) +
+                        "\n            "
+                    ),
+                  ]
+                },
+              },
+              {
+                key: "item.status",
+                fn: function (ref) {
+                  var item = ref.item
+                  return [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(item.status == 3 ? "Done" : "Declined") +
                         "\n            "
                     ),
                   ]

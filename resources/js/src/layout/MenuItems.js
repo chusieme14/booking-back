@@ -15,8 +15,8 @@ export default [
         route:'requirements',
     },
     {
-        name:'Transactions',
-        icon:'mdi-cash-multiple',
+        name:'Rating',
+        icon:'mdi-star',
         route:'transactions',
     },
     {

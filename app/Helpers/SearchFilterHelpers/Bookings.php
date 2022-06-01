@@ -32,7 +32,7 @@ class Bookings {
     public function forTransaction()
     {
         if(Request()->transactions){
-            $this->model->where('status', 3);
+            $this->model->whereIn('status', [3, 4]);
         }
     }
 
@@ -86,6 +86,16 @@ class Bookings {
                     $this->model->join('clients', 'clients.id', '=', 'bookings.client_id')
                         ->select('clients.last_name', 'bookings.*')
                         ->orderBy('clients.last_name', $exactSortType);  
+                }
+                elseif($exactSortKey == 'staff'){
+                    $this->model->join('staffs', 'staffs.id', '=', 'bookings.staff_id')
+                        ->select('staffs.last_name', 'bookings.*')
+                        ->orderBy('staffs.last_name', $exactSortType);  
+                }
+                elseif($exactSortKey == 'rating'){
+                    $this->model->join('ratings', 'ratings.booking_id', '=', 'bookings.id')
+                        ->select('ratings.star_number', 'bookings.*')
+                        ->orderBy('ratings.star_number', $exactSortType);  
                 }
                 else{
                     $this->model->orderBy($exactSortKey, $exactSortType);  

@@ -42,6 +42,9 @@
                 <template v-slot:item.service="{ item }">
                     {{item.service.name}}
                 </template>
+                <template v-slot:item.status="{ item }">
+                    {{item.status==3?'Done':'Declined'}}
+                </template>
                 <template v-slot:item.rating="{ item }">
                     <div v-if="item.rating">
                         <v-icon :color="item.rating.star_number>=1?'yellow darken-1':''">mdi-star</v-icon>
@@ -155,6 +158,12 @@ export default {
                     align: 'start',
                     sortable: true,
                     value: 'service',
+                },
+                {
+                    text: 'Status',
+                    align: 'start',
+                    sortable: true,
+                    value: 'status',
                 },
                 {
                     text: 'Rating',

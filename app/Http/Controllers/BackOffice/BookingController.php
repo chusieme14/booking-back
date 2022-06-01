@@ -37,6 +37,7 @@ class BookingController extends Controller
         Booking::where('id', $id)->update([
             'status' => 4,
             'declined_reason' => $request->declined_reason,
+            'staff_id' => auth()->guard('web')->user()->id,
         ]);
     }
 }
