@@ -7,12 +7,13 @@
                 @refresh="fetchPage"
                 @search="fetchPage"
                 @filterRecord="fetchPage"
+                @resetFilters="resetFilter"
                 :hide="['addNew']"
             >
                 <template v-slot:custom_filter>
-                    <graduate-filter
+                    <rate-filter
                         :filter="data.filter"
-                    ></graduate-filter>
+                    ></rate-filter>
                 </template>
             </table-header>
             <v-data-table
@@ -104,10 +105,12 @@
     </v-card>
 </template>
 <script>
+import RateFilter from './filter.vue'
 import ReqsForm from './form.vue'
 export default {
     components:{
-        ReqsForm
+        ReqsForm,
+        RateFilter
     },
     data(){
         return {
@@ -246,7 +249,11 @@ export default {
             this.payload.requirements = []
             this.showForm = false
             this.isdelete = false
-        }
+        },
+        resetFilter(){
+            this.data.filter={};
+            this.fetchPage();
+        },
       
 
     }

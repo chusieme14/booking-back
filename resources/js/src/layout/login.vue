@@ -6,7 +6,7 @@
                     <v-card width=470>
                         <v-card-title>Sign in</v-card-title>
                         <v-card-text>
-                            <v-label>Emial</v-label>
+                            <v-label>Email</v-label>
                             <v-text-field
                                 v-model="credential.username"
                                 solo

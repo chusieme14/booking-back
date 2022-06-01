@@ -15,6 +15,7 @@ class Bookings {
     {
         $this->searchColumns();
         $this->sortBy();
+        $this->filterBy();
         $this->forAppointment();
         $this->forTransaction();
         $per_page = Request()->per_page;
@@ -33,6 +34,13 @@ class Bookings {
     {
         if(Request()->transactions){
             $this->model->whereIn('status', [3, 4]);
+        }
+    }
+
+    public function filterBy()
+    {
+        if(Request()->date){
+            $this->model->WhereDate('updated_at', Request()->date);
         }
     }
 
