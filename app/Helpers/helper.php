@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-    function userProfileUploader($file, $path)
+    function userProfileUploader($file, $path, $reqs_id, $id)
     {
         $folder = public_path($path);
         
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
             mkdir($folder, 0777, true);
         }
         
-        $name = time().'.' . explode('/', explode(':', substr($file, 0, strpos($file, ';')))[1])[1];
+        $name = time().''.$reqs_id.''.$id.'.' . explode('/', explode(':', substr($file, 0, strpos($file, ';')))[1])[1];
         $success = Image::make($file)
             ->save($folder.$name);
 

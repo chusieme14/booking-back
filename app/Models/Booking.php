@@ -21,11 +21,21 @@ class Booking extends Model
     ];
 
     protected $with = [
-        'service','client','rating','staff'
+        'service','client','rating','staff','documents'
     ];
+
+    const WAITING = 1;
+    const Accepted = 2;
+    const DONE = 3;
+    const Declined = 4;
+    const Rated = 5;
 
     public function service(){
         return $this->belongsTo(Service::class);
+    }
+
+    public function documents(){
+        return $this->hasMany(Document::class);
     }
 
     public function client(){
@@ -40,8 +50,4 @@ class Booking extends Model
         return $this->hasOne(Rating::class);
     }
 
-    const WAITING = 1;
-    const Accepted = 2;
-    const DONE = 3;
-    const Declined = 4;
 }

@@ -276,6 +276,53 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -289,6 +336,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showForm: false,
       isdeclined: false,
       isdelete: false,
+      isview: false,
+      selectedimage: '',
       appointments: [],
       selectedBooking: {}
     }, _defineProperty(_ref, "payload", {
@@ -336,11 +385,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }]), _ref;
   },
   methods: {
+    viewDocuments: function viewDocuments(item) {
+      Object.assign(this.selectedBooking, item);
+      console.log(this.selectedBooking, "sjdhjksdhjshdjksh");
+      this.isview = true;
+    },
     showAcceptForm: function showAcceptForm(val) {
       Object.assign(this.selectedBooking, val);
       this.showForm = true;
     },
     showDecline: function showDecline(val) {
+      this.selectedBooking = {};
       Object.assign(this.selectedBooking, val);
       this.isdeclined = true;
     },
@@ -414,6 +469,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.showForm = false;
       this.isdeclined = false;
       this.isdelete = false;
+      this.isview = false;
+      this.selectedimage = '';
     }
   }
 });
@@ -432,7 +489,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, ".class-action[data-v-7c431c9e] {\n  display: flex;\n  justify-content: flex-end;\n}", ""]);
+exports.push([module.i, ".class-action[data-v-7c431c9e] {\n  display: flex;\n  justify-content: flex-end;\n}\n.class-inner-view[data-v-7c431c9e] {\n  display: flex;\n}\n.class-inner-view div[data-v-7c431c9e]:first-child {\n  width: 300px;\n  display: block;\n  overflow: auto;\n}", ""]);
 
 // exports
 
@@ -919,6 +976,69 @@ var render = function () {
                             _c(
                               "v-tooltip",
                               {
+                                attrs: { color: "primary", left: "" },
+                                scopedSlots: _vm._u(
+                                  [
+                                    {
+                                      key: "activator",
+                                      fn: function (ref) {
+                                        var on = ref.on
+                                        var attrs = ref.attrs
+                                        return [
+                                          _c(
+                                            "v-btn",
+                                            _vm._g(
+                                              _vm._b(
+                                                {
+                                                  attrs: {
+                                                    color: "primary",
+                                                    icon: "",
+                                                  },
+                                                  on: {
+                                                    click: function ($event) {
+                                                      return _vm.viewDocuments(
+                                                        item
+                                                      )
+                                                    },
+                                                  },
+                                                },
+                                                "v-btn",
+                                                attrs,
+                                                false
+                                              ),
+                                              on
+                                            ),
+                                            [
+                                              _c(
+                                                "v-icon",
+                                                { attrs: { small: "" } },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                mdi-file\n                                "
+                                                  ),
+                                                ]
+                                              ),
+                                            ],
+                                            1
+                                          ),
+                                        ]
+                                      },
+                                    },
+                                  ],
+                                  null,
+                                  true
+                                ),
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        View Documents\n                    "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-tooltip",
+                              {
                                 attrs: { color: "success", left: "" },
                                 scopedSlots: _vm._u(
                                   [
@@ -1046,7 +1166,7 @@ var render = function () {
                         )
                       : _vm._e(),
                     _vm._v(" "),
-                    item.status == 2
+                    item.status == 5
                       ? [
                           _c(
                             "v-tooltip",
@@ -1136,6 +1256,97 @@ var render = function () {
             attrs: { payload: _vm.payload, show: _vm.showForm },
             on: { cancel: _vm.cancel, save: _vm.acceptBooking },
           }),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { persistent: "", "max-width": "1000px" },
+          model: {
+            value: _vm.isview,
+            callback: function ($$v) {
+              _vm.isview = $$v
+            },
+            expression: "isview",
+          },
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c(
+                "v-card-title",
+                [
+                  _vm._v(
+                    _vm._s(
+                      _vm.selectedBooking.service
+                        ? _vm.selectedBooking.service.name
+                        : ""
+                    ) + "\n                "
+                  ),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { icon: "", color: "red" },
+                      on: { click: _vm.clear },
+                    },
+                    [_c("v-icon", [_vm._v("mdi-close")])],
+                    1
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-card-text", { staticClass: "class-inner-view" }, [
+                _c(
+                  "div",
+                  _vm._l(_vm.selectedBooking.documents, function (item) {
+                    return _c(
+                      "v-btn",
+                      {
+                        key: item.id,
+                        staticClass: "mt-2",
+                        attrs: { text: "" },
+                        on: {
+                          click: function ($event) {
+                            _vm.selectedimage = item.image_path
+                          },
+                        },
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(item.requirement.name) +
+                            "\n                    "
+                        ),
+                      ]
+                    )
+                  }),
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  [
+                    _c("v-img", {
+                      attrs: {
+                        "lazy-src": _vm.selectedimage,
+                        width: "700",
+                        src: _vm.selectedimage,
+                        contain: "",
+                      },
+                    }),
+                  ],
+                  1
+                ),
+              ]),
+            ],
+            1
+          ),
         ],
         1
       ),

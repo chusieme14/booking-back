@@ -15,11 +15,19 @@ class BookingController extends Controller
             return response()->json(['message'=>'please rate your previous appointment']);
         }
         foreach ($request->service_ids as $service) {
-            Booking::create([
+            $booking = Booking::create([
                 'date_requested' => Carbon::now(),
                 'client_id' => $request->client_id,
                 'service_id' => $service,
             ]);
+            foreach ($request->documents as $document) {
+                if($booking->service_id == $document['service_id']){
+                    $booking->documents()->create([
+                        'requirement_id' => $document['requirement_id'],
+                        'image_path' => userProfileUploader($document['image_base64'], 'documents/', $document['requirement_id'], $booking->id)
+                    ]);
+                }
+            }
         }
     }
 
@@ -35,6 +43,9 @@ class BookingController extends Controller
         $booking->rating()->create([
             'star_number' => $request->star,
             'suggestion' => $request->suggestion,
+        ]);
+        $booking->update([
+            'status' => Booking::Rated
         ]);
     }
 }

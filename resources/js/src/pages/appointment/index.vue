@@ -46,6 +46,22 @@
                 </template>
                 <template v-slot:item.action="{ item }">
                     <v-row v-if="item.status==1">
+                        <v-tooltip color="primary" left>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                    color="primary"
+                                    icon
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    @click="viewDocuments(item)"
+                                >
+                                    <v-icon small>
+                                    mdi-file
+                                    </v-icon>
+                                </v-btn>
+                            </template>
+                            View Documents
+                        </v-tooltip>
                         <v-tooltip color="success" left>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn
@@ -79,7 +95,7 @@
                             Decline Booking
                         </v-tooltip>
                     </v-row>
-                    <template v-if="item.status==2">
+                    <template v-if="item.status==5">
                         <v-tooltip color="success" left>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn
@@ -113,6 +129,37 @@
                 @cancel="cancel"
                 @save="acceptBooking"
             ></appt-form>
+        </v-dialog>
+        <v-dialog
+            v-model="isview"
+            persistent
+            max-width="1000px"
+        >
+            <v-card>
+                <v-card-title>{{selectedBooking.service?selectedBooking.service.name:''}}
+                    <v-spacer></v-spacer>
+                    <v-btn @click="clear" icon color="red">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                </v-card-title>
+                <v-card-text class="class-inner-view">
+                    <div>
+                        <v-btn class="mt-2" text v-for="item in selectedBooking.documents" :key="item.id" 
+                        @click="selectedimage=item.image_path">
+                            {{item.requirement.name}}
+                        </v-btn>
+                    </div>
+                    
+                    <div>
+                        <v-img
+                            :lazy-src="selectedimage"
+                            width="700"
+                            :src="selectedimage"
+                            contain
+                        ></v-img>
+                    </div>
+                </v-card-text>
+            </v-card>
         </v-dialog>
         <v-dialog
             v-model="isdeclined"
@@ -152,6 +199,8 @@ export default {
             showForm:false,
             isdeclined:false,
             isdelete:false,
+            isview:false,
+            selectedimage:'',
             appointments:[],
             selectedBooking:{},
             payload:{
@@ -213,11 +262,17 @@ export default {
         }
     },
     methods:{
+        viewDocuments(item){
+            Object.assign(this.selectedBooking, item)
+            console.log(this.selectedBooking,"sjdhjksdhjshdjksh")
+            this.isview = true
+        },
         showAcceptForm(val){
             Object.assign(this.selectedBooking, val)
             this.showForm = true
         },
         showDecline(val){
+            this.selectedBooking={}
             Object.assign(this.selectedBooking, val)
             this.isdeclined = true
         },
@@ -269,6 +324,8 @@ export default {
             this.showForm = false
             this.isdeclined = false
             this.isdelete = false
+            this.isview = false
+            this.selectedimage = ''
         }
       
 
@@ -279,5 +336,13 @@ export default {
     .class-action{
         display: flex;
         justify-content: flex-end;
+    }
+    .class-inner-view{
+        display: flex;
+        div:first-child{
+            width: 300px;
+            display: block;
+            overflow: auto;
+        }
     }
 </style>

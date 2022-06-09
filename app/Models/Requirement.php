@@ -16,4 +16,8 @@ class Requirement extends Model
     public function services(){
         return $this->belongsToMany(Service::class);
     }
+
+    public function documents(){
+        return $this->hasMany(Document::class);
+    }
 }
