@@ -21,7 +21,7 @@ class Booking extends Model
     ];
 
     protected $with = [
-        'service','client','rating','staff','documents'
+        'service','client','rating','staff','documents', 'service_provided', 'office_staff'
     ];
 
     const WAITING = 1;
@@ -47,7 +47,13 @@ class Booking extends Model
     }
 
     public function rating(){
-        return $this->hasOne(Rating::class);
+        return $this->hasOne(Rating::class)->where('type', 1);
+    }
+    public function service_provided(){
+        return $this->hasOne(Rating::class)->where('type', 2);
+    }
+    public function office_staff(){
+        return $this->hasOne(Rating::class)->where('type', 3);
     }
 
 }

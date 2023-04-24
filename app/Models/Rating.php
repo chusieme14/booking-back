@@ -13,6 +13,7 @@ class Rating extends Model
         'suggestion',
         'star_number',
         'booking_id',
+        'type',
     ];
 
     public function booking()

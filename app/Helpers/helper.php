@@ -62,4 +62,18 @@ use Illuminate\Support\Facades\Storage;
         }
         return $randomString;
     }
+
+    function checkLegend($average){
+        if($average > 4.50){
+            return 'Best';
+        }else if($average > 3.50 && $average < 4.51){
+            return 'Better';
+        }else if ($average > 2.50 && $average < 3.51) {
+            return 'Good';
+        }else if ($average > 1.50 && $average < 2.51) {
+            return 'Fair';
+        }else if ($average < 1.51) {
+            return 'Fair';
+        }
+    }
 ?>

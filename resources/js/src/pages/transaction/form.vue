@@ -6,7 +6,7 @@
             <h3>Client name: {{payload.client.fullname}}</h3>
             <h3>Service: {{payload.service.name}}</h3>
             <div v-if="payload.rating" class="class-rating">
-                <h3>Rating: </h3>
+                <h3>Waiting Time: </h3>
                 <v-icon :color="payload.rating.star_number>=1?'yellow darken-1':''">mdi-star</v-icon>
                 <v-icon :color="payload.rating.star_number>=2?'yellow darken-1':''">mdi-star</v-icon>
                 <v-icon :color="payload.rating.star_number>=3?'yellow darken-1':''">mdi-star</v-icon>
@@ -14,7 +14,39 @@
                 <v-icon :color="payload.rating.star_number>=5?'yellow darken-1':''">mdi-star</v-icon>
             </div>
             <div v-else class="class-rating">
-                <h3>Rating: </h3>
+                <h3>Waiting Time: </h3>
+                <v-icon>mdi-star</v-icon>
+                <v-icon>mdi-star</v-icon>
+                <v-icon>mdi-star</v-icon>
+                <v-icon>mdi-star</v-icon>
+                <v-icon>mdi-star</v-icon>
+            </div>
+            <div v-if="payload.service_provided" class="class-rating">
+                <h3>Service Provided: </h3>
+                <v-icon :color="payload.service_provided.star_number>=1?'yellow darken-1':''">mdi-star</v-icon>
+                <v-icon :color="payload.service_provided.star_number>=2?'yellow darken-1':''">mdi-star</v-icon>
+                <v-icon :color="payload.service_provided.star_number>=3?'yellow darken-1':''">mdi-star</v-icon>
+                <v-icon :color="payload.service_provided.star_number>=4?'yellow darken-1':''">mdi-star</v-icon>
+                <v-icon :color="payload.service_provided.star_number>=5?'yellow darken-1':''">mdi-star</v-icon>
+            </div>
+            <div v-else class="class-rating">
+                <h3>Service Provided: </h3>
+                <v-icon>mdi-star</v-icon>
+                <v-icon>mdi-star</v-icon>
+                <v-icon>mdi-star</v-icon>
+                <v-icon>mdi-star</v-icon>
+                <v-icon>mdi-star</v-icon>
+            </div>
+            <div v-if="payload.office_staff" class="class-rating">
+                <h3>Office Staff: </h3>
+                <v-icon :color="payload.office_staff.star_number>=1?'yellow darken-1':''">mdi-star</v-icon>
+                <v-icon :color="payload.office_staff.star_number>=2?'yellow darken-1':''">mdi-star</v-icon>
+                <v-icon :color="payload.office_staff.star_number>=3?'yellow darken-1':''">mdi-star</v-icon>
+                <v-icon :color="payload.office_staff.star_number>=4?'yellow darken-1':''">mdi-star</v-icon>
+                <v-icon :color="payload.office_staff.star_number>=5?'yellow darken-1':''">mdi-star</v-icon>
+            </div>
+            <div v-else class="class-rating">
+                <h3>Office Staff: </h3>
                 <v-icon>mdi-star</v-icon>
                 <v-icon>mdi-star</v-icon>
                 <v-icon>mdi-star</v-icon>

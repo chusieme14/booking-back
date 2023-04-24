@@ -15,6 +15,23 @@
                         :filter="data.filter"
                     ></rate-filter>
                 </template>
+                <template v-slot:custom_actions>
+                    <v-tooltip color="success" bottom>
+                        <template v-slot:activator="{ on: tooltip }">
+                            <v-btn
+                                fab
+                                tile
+                                color="success"
+                                v-on="{ ...tooltip }"
+                                class="mr-2"
+                                @click="printReport()"
+                            >
+                                <v-icon>mdi-download</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Print report</span>
+                    </v-tooltip>
+                </template>
             </table-header>
             <v-data-table
                 :headers="headers"
@@ -53,6 +70,38 @@
                         <v-icon :color="item.rating.star_number>=3?'yellow darken-1':''">mdi-star</v-icon>
                         <v-icon :color="item.rating.star_number>=4?'yellow darken-1':''">mdi-star</v-icon>
                         <v-icon :color="item.rating.star_number>=5?'yellow darken-1':''">mdi-star</v-icon>
+                    </div>
+                    <div v-else>
+                        <v-icon >mdi-star</v-icon>
+                        <v-icon >mdi-star</v-icon>
+                        <v-icon >mdi-star</v-icon>
+                        <v-icon >mdi-star</v-icon>
+                        <v-icon >mdi-star</v-icon>
+                    </div>
+                </template>
+                <template v-slot:item.service_provided="{ item }">
+                    <div v-if="item.service_provided">
+                        <v-icon :color="item.service_provided.star_number>=1?'yellow darken-1':''">mdi-star</v-icon>
+                        <v-icon :color="item.service_provided.star_number>=2?'yellow darken-1':''">mdi-star</v-icon>
+                        <v-icon :color="item.service_provided.star_number>=3?'yellow darken-1':''">mdi-star</v-icon>
+                        <v-icon :color="item.service_provided.star_number>=4?'yellow darken-1':''">mdi-star</v-icon>
+                        <v-icon :color="item.service_provided.star_number>=5?'yellow darken-1':''">mdi-star</v-icon>
+                    </div>
+                    <div v-else>
+                        <v-icon >mdi-star</v-icon>
+                        <v-icon >mdi-star</v-icon>
+                        <v-icon >mdi-star</v-icon>
+                        <v-icon >mdi-star</v-icon>
+                        <v-icon >mdi-star</v-icon>
+                    </div>
+                </template>
+                <template v-slot:item.office_staff="{ item }">
+                    <div v-if="item.office_staff">
+                        <v-icon :color="item.office_staff.star_number>=1?'yellow darken-1':''">mdi-star</v-icon>
+                        <v-icon :color="item.office_staff.star_number>=2?'yellow darken-1':''">mdi-star</v-icon>
+                        <v-icon :color="item.office_staff.star_number>=3?'yellow darken-1':''">mdi-star</v-icon>
+                        <v-icon :color="item.office_staff.star_number>=4?'yellow darken-1':''">mdi-star</v-icon>
+                        <v-icon :color="item.office_staff.star_number>=5?'yellow darken-1':''">mdi-star</v-icon>
                     </div>
                     <div v-else>
                         <v-icon >mdi-star</v-icon>
@@ -169,10 +218,22 @@ export default {
                     value: 'status',
                 },
                 {
-                    text: 'Rating',
+                    text: 'Waiting Time',
                     align: 'start',
-                    sortable: true,
+                    sortable: false,
                     value: 'rating',
+                },
+                {
+                    text: 'Service Provided',
+                    align: 'start',
+                    sortable: false,
+                    value: 'service_provided',
+                },
+                {
+                    text: 'Office Staff',
+                    align: 'start',
+                    sortable: false,
+                    value: 'office_staff',
                 },
                 {
                     text: 'Action',
@@ -184,6 +245,10 @@ export default {
         }
     },
     methods:{
+        printReport(){
+            // const routeData = this.$router.resolve({name: 'routeName', query: {data: "someData"}});
+            window.open('print-transaction-report', '_blank');
+        },
         showViewForm(val){
             Object.assign(this.payload, val)
             this.showForm = true

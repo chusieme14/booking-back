@@ -43,6 +43,15 @@ class BookingController extends Controller
         $booking->rating()->create([
             'star_number' => $request->star,
             'suggestion' => $request->suggestion,
+            'type' => 1
+        ]);
+        $booking->rating()->create([
+            'star_number' => $request->star1,
+            'type' => 2
+        ]);
+        $booking->rating()->create([
+            'star_number' => $request->star2,
+            'type' => 3
         ]);
         $booking->update([
             'status' => Booking::Rated
