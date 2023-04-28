@@ -44,10 +44,10 @@ Route::get('/print-transaction-report', function () {
     $ratings = Rating::whereHas('booking', function($q){
         $q->whereMonth('date_accepted', Carbon::now()->month)->where('status', Booking::DONE);
     })->get()->groupBy('type');
-    $waiting_rate = $ratings[1]->sum('star_number')/sizeof($ratings[1]);
-    $service_rate = $ratings[2]->sum('star_number')/sizeof($ratings[2]);
-    $staff_rate = $ratings[3]->sum('star_number')/sizeof($ratings[3]);
-    $overall_rate = ($waiting_rate + $service_rate + $staff_rate) / 3;
+    $waiting_rate = number_format($ratings[1]->sum('star_number')/sizeof($ratings[1]), 2, '.');
+    $service_rate = number_format($ratings[2]->sum('star_number')/sizeof($ratings[2]), 2, '.');
+    $staff_rate = number_format($ratings[3]->sum('star_number')/sizeof($ratings[3]), 2, '.');
+    $overall_rate = number_format(($waiting_rate + $service_rate + $staff_rate) / 3, 2, '.');
     $suggestions = [];
     foreach ($ratings[1] as $key => $rate) {
         if($key > 2) break;
