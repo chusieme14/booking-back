@@ -99,7 +99,7 @@
                 </v-container>
             </v-form>
             <v-card>
-                <v-card-title>Select Requirements
+                <v-card-title>Select Services
                     <v-spacer></v-spacer>
                     <v-text-field
                         v-model="data.keyword"

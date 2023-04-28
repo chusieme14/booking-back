@@ -47,6 +47,7 @@ Route::get('/print-transaction-report', function () {
     $waiting_rate = $ratings[1]->sum('star_number')/sizeof($ratings[1]);
     $service_rate = $ratings[2]->sum('star_number')/sizeof($ratings[2]);
     $staff_rate = $ratings[3]->sum('star_number')/sizeof($ratings[3]);
+    $overall_rate = ($waiting_rate + $service_rate + $staff_rate) / 3;
     $suggestions = [];
     foreach ($ratings[1] as $key => $rate) {
         if($key > 2) break;
@@ -61,6 +62,8 @@ Route::get('/print-transaction-report', function () {
         'service_legend' => checkLegend($service_rate),
         'staff_rate' => $staff_rate,
         'staff_legend' => checkLegend($staff_rate),
+        'overall_rate' => $overall_rate,
+        'overall_legend' => checkLegend($overall_rate),
         'suggestions' => $suggestions,
         'year' => Carbon::now()->year,
         'month' => Carbon::createFromDate(null, 4, null)->format('F'),

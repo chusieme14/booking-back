@@ -173,6 +173,11 @@
                     <td style="text-align: center;">{{$pdf_data['staff_rate']}}</td>
                     <td style="text-align: center;">{{$pdf_data['staff_legend']}}</td>
                   </tr>
+                  <tr>
+                    <td>OVERALL</td>
+                    <td style="text-align: center;">{{$pdf_data['overall_rate']}}</td>
+                    <td style="text-align: center;">{{$pdf_data['overall_legend']}}</td>
+                  </tr>
                 </tbody>
               </table>
               <small>Legend:</small>
@@ -188,7 +193,7 @@
               <small style="margin-left: 20px;">1.00-1.50 - Poor</small>
             </td>
           </tr>
-          <tr>
+          {{-- <tr>
             <td colspan="4">lV. Suggestions to help improve the services</td>
           </tr>
           <tr>
@@ -209,7 +214,7 @@
                 </tbody>
               </table>
             </td>
-          </tr>
+          </tr> --}}
           <tr>
             <td colspan="4">Prepared by:</td>
           </tr>
