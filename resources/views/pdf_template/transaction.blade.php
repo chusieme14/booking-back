@@ -193,7 +193,7 @@
               <small style="margin-left: 20px;">1.00-1.50 - Poor</small>
             </td>
           </tr>
-          {{-- <tr>
+          <tr>
             <td colspan="4">lV. Suggestions to help improve the services</td>
           </tr>
           <tr>
@@ -214,7 +214,7 @@
                 </tbody>
               </table>
             </td>
-          </tr> --}}
+          </tr>
           <tr>
             <td colspan="4">Prepared by:</td>
           </tr>
