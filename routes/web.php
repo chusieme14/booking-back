@@ -66,7 +66,7 @@ Route::get('/print-transaction-report', function () {
         'overall_legend' => checkLegend($overall_rate),
         'suggestions' => $suggestions,
         'year' => Carbon::now()->year,
-        'month' => Carbon::createFromDate(null, 4, null)->format('F'),
+        'month' => Carbon::createFromDate(null, Carbon::now()->month, null)->format('F'),
         'total_suggestion' => sizeof($ratings[1]),
     ];
     $pdf = PDF::loadView('pdf_template.transaction', ['pdf_data' => $pdf_data]);
