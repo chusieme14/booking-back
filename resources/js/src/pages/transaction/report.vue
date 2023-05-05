@@ -1,40 +1,49 @@
 <template>
-  <div>
-    <p class="ma-0 pa-0">Month</p>
-    <v-autocomplete 
-        dense
-        solo
-        :items="months"
-        item-value="id"
-        item-text="text"
-        v-model="filter.month"
-        hide-details="auto"
-    >
+  <v-dialog v-model="show" persistenta width="600">
+    <v-card>
+      <v-card-title>Report filter</v-card-title>
+      <v-card-text>
+        <p class="ma-0 pa-0">Month</p>
+        <v-autocomplete 
+            solo
+            :items="months"
+            item-value="id"
+            item-text="text"
+            v-model="rfilter.month"
+            hide-details="auto"
+        >
 
-    </v-autocomplete>
-    <p class="ma-0 pa-0">Year</p>
-    <v-autocomplete 
-        dense
-        solo
-        :items="years"
-        item-value="id"
-        item-text="text"
-        v-model="filter.year"
-        hide-details="auto"
-    >
+        </v-autocomplete>
+        <p class="ma-0 pa-0 mt-2">Year</p>
+        <v-autocomplete 
+            solo
+            :items="years"
+            item-value="id"
+            item-text="text"
+            v-model="rfilter.year"
+            hide-details="auto"
+        >
 
-    </v-autocomplete>
-  </div>
+        </v-autocomplete>
+      </v-card-text>
+      <v-card-action class="d-flex flex-row-reverse pa-5">
+        <v-btn color="success" @click="$emit('view')">View</v-btn>
+        <v-btn color="error" class="mr-1" @click="$emit('cancel')">Cancel</v-btn>
+      </v-card-action>
+    </v-card>
+  </v-dialog>
 </template>
 <script>
 export default {
   props:{
-    filter:{}
+    rfilter:{},
+    show:{
+      type:Boolean,
+      default:()=>false
+    }
   },
   data(){
     return{
-      minDate: new Date().toISOString().slice(0,10),
-      menu1:false,
       months:[
         {
           id:1,

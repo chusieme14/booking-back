@@ -31,9 +31,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/print-transaction-report', function () {
     $services = Service::withCount(['bookings'=>function($q){
-        $q->whereMonth('date_accepted', Carbon::now()->subMonth()->month)->where('status', Booking::DONE);
+        $q->whereMonth('date_completed', Request()->month)
+        ->whereYear('date_completed', Request()->year)
+        ->where('status', Booking::DONE);
     }])->whereHas('bookings', function($q){
-        $q->whereMonth('date_accepted', Carbon::now()->subMonth()->month)->where('status', Booking::DONE);
+        $q->whereMonth('date_completed', Request()->month)
+        ->whereYear('date_completed', Request()->year)
+        ->where('status', Booking::DONE);
     })->get();
     $services = $services->toArray();
     array_multisort(array_column($services, 'bookings_count'), SORT_DESC, $services);
@@ -42,8 +46,11 @@ Route::get('/print-transaction-report', function () {
     $logobase64 = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($logoPath));
 
     $ratings = Rating::whereHas('booking', function($q){
-        $q->whereMonth('date_accepted', Carbon::now()->subMonth()->month)->where('status', Booking::DONE);
+        $q->whereMonth('date_completed', Request()->month)
+        ->whereYear('date_completed', Request()->year)
+        ->where('status', Booking::DONE);
     })->get()->groupBy('type');
+    if(sizeof($ratings) < 1) return "No data found";
     $waiting_rate = number_format($ratings[1]->sum('star_number')/sizeof($ratings[1]), 2, '.', '');
     $service_rate = number_format($ratings[2]->sum('star_number')/sizeof($ratings[2]), 2, '.', '');
     $staff_rate = number_format($ratings[3]->sum('star_number')/sizeof($ratings[3]), 2, '.', '');
@@ -66,7 +73,7 @@ Route::get('/print-transaction-report', function () {
         'overall_legend' => checkLegend($overall_rate),
         'suggestions' => $suggestions,
         'year' => Carbon::now()->year,
-        'month' => Carbon::createFromDate(null, Carbon::now()->subMonth()->month, null)->format('F'),
+        'month' => Carbon::createFromDate(null, Request()->month, null)->format('F'),
         'total_suggestion' => sizeof($ratings[1]),
     ];
     $pdf = PDF::loadView('pdf_template.transaction', ['pdf_data' => $pdf_data]);

@@ -139,7 +139,7 @@
         >
             <reqs-form
                 :key="payload.id" 
-                :payload="payload"
+                :payload="payload"a
                 :show="showForm" 
                 @cancel="cancel"
                 @save="save"
@@ -151,21 +151,31 @@
             @cancel="cancel"
             @confirm="remove"
         />
+        <ReportForm
+            :show="showreport"
+            :rfilter="rfilter"
+            @view="viewReport"
+            @cancel="cancelReport"
+        />
     </v-card>
 </template>
 <script>
 import RateFilter from './filter.vue'
 import ReqsForm from './form.vue'
+import ReportForm from './report.vue'
 export default {
     components:{
         ReqsForm,
-        RateFilter
+        RateFilter,
+        ReportForm
     },
     data(){
         return {
             payload:{},
             showForm:false,
+            showreport:false,
             isdelete:false,
+            rfilter:{},
             transactions:[],
             payload:{
                 name:'',
@@ -236,6 +246,12 @@ export default {
                     value: 'office_staff',
                 },
                 {
+                    text: 'Completed date',
+                    align: 'start',
+                    sortable: false,
+                    value: 'date_completed',
+                },
+                {
                     text: 'Action',
                     align: 'start',
                     sortable: false,
@@ -245,9 +261,21 @@ export default {
         }
     },
     methods:{
+        viewReport(){
+            let params = ''
+            if(this.rfilter.month) params = params + 'month=' + this.rfilter.month
+            if(this.rfilter.year) params = params + '&year=' + this.rfilter.year
+            window.open(`print-transaction-report?${params}`, '_blank');
+            this.showreport = false
+        },
+        cancelReport(){
+            this.rfilter = {}
+            this.showreport = false
+        },
         printReport(){
+            this.showreport = true
             // const routeData = this.$router.resolve({name: 'routeName', query: {data: "someData"}});
-            window.open('print-transaction-report', '_blank');
+            // window.open('print-transaction-report?test=1', '_blank');
         },
         showViewForm(val){
             Object.assign(this.payload, val)

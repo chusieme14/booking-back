@@ -3,8 +3,11 @@
 namespace App\Helpers\SearchFilterHelpers;
 
 use App\Models\Booking;
+use Carbon\Carbon;
 
 class Bookings {
+
+    protected $model;
 
     public function __construct()
     {
@@ -16,6 +19,8 @@ class Bookings {
         $this->searchColumns();
         $this->sortBy();
         $this->filterBy();
+        $this->byMonth();
+        $this->byYear();
         $this->forAppointment();
         $this->forTransaction();
         $per_page = Request()->per_page;
@@ -73,6 +78,22 @@ class Bookings {
     {
         if(Request()->department_id){
             $this->model->where('department_id', Request()->department_id);
+        }
+    }
+
+    public function byMonth()
+    {
+        if(Request()->month){
+            $this->model->whereMonth('date_completed', Request()->month);
+        }
+    }
+
+    public function byYear()
+    {
+        if(Request()->year){
+            $this->model->whereYear('date_completed', Request()->year);
+        }else{
+            $this->model->whereYear('date_completed', Carbon::now()->year);
         }
     }
 
