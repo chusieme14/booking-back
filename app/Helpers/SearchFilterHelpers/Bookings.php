@@ -76,7 +76,7 @@ class Bookings {
 
     public function byDepartment()
     {
-        if(Request()->department_id){
+        if( Request()->department_id ){
             $this->model->where('department_id', Request()->department_id);
         }
     }
