@@ -31,7 +31,7 @@ class Bookings {
     public function forAppointment()
     {
         if(Request()->appointment){
-            $this->model->whereIn('status',[1,2,5])->where('status', '!=', 4);
+            $this->model->whereIn('status',[1,2,5]);
         }
     }
 
