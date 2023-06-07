@@ -90,10 +90,12 @@ class Bookings {
 
     public function byYear()
     {
-        if(Request()->year){
-            $this->model->whereYear('date_completed', Request()->year);
-        }else{
-            $this->model->whereYear('date_completed', Carbon::now()->year);
+        if(Request()->transactions){
+            if(Request()->year){
+                $this->model->whereYear('date_completed', Request()->year);
+            }else{
+                $this->model->whereYear('date_completed', Carbon::now()->year);
+            }
         }
     }
 
