@@ -265,6 +265,7 @@ export default {
             let params = ''
             if(this.rfilter.month) params = params + 'month=' + this.rfilter.month
             if(this.rfilter.year) params = params + '&year=' + this.rfilter.year
+            params = params + '&transactions=1'
             window.open(`print-transaction-report?${params}`, '_blank');
             this.showreport = false
         },
